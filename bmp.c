@@ -113,13 +113,6 @@ void bmpCalcSNR(const char *fileName, BMP *new_bmp, int width, int height, long 
             new_b = new_pixel & 0xff;
             noise_pwr += ((new_r - ref_r) * (new_r - ref_r) +
                           (new_g - ref_g) * (new_g - ref_g) + (new_b - ref_b) * (new_b - ref_b));
-#if 1
-            if (abs(ref_r - new_r) > 1.0) {
-                printf("(col,row)=(%d,%d)ref(%d,%d,%d,%d)new(%d,%d,%d,%d)\n",
-                       col, row, ref_a, ref_r, ref_g, ref_b, 
-                                 new_a, new_r, new_g, new_b);
-            }
-#endif
         }
     }
     printf("Signal Power : %u Noise Power : %u SNR : %lf dB\n", signal_pwr, noise_pwr, 10*log10(1.0*signal_pwr/noise_pwr));
@@ -140,15 +133,6 @@ void rgbaToBw(uint32_t *data, int width, int height, long stride){
             b = pixel & 0xff;
             bw = (uint32_t) (r * 0.299 + g * 0.587 + b * 0.114);
             data[col + row * stride / 4] = (a << 24) + (bw << 16) + (bw << 8) + (bw);
-#if 1
-            if ((row == 0) && (col == 0)) {
-               printf("width(%d)height(%d)\n", width, height);
-            }
-            if ((row == 0) && (col < 16)) {
-               printf("(col,row)=(%d,%d) rgb(%d,%d,%d,%d)bw(%d)\n",
-                      col, row, a, r, g, b, bw);
-            }
-#endif
         }
     }
 }
