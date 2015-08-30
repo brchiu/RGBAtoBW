@@ -5,12 +5,20 @@
 
 int main(int argc, char *argv[]) {
     char openfile[] = "./pictures/01.bmp";
-    #if defined(VERSION4)
-    char savefile[] = "./pictures/01_version4.bmp";
+    #if defined(VERSION1)
+    const char savefile[] = "./pictures/01_version1.bmp";
+    #elif defined(VERSION2)
+    const char savefile[] = "./pictures/01_version2.bmp";
+    #elif defined(VERSION3)
+    const char savefile[] = "./pictures/01_version3.bmp";
+    #elif defined(VERSION4)
+    const char savefile[] = "./pictures/01_version4.bmp";
     #elif defined(VERSION5)
-    char savefile[] = "./pictures/01_version5.bmp";	
+    const char savefile[] = "./pictures/01_version5.bmp";
+    #elif defined(VERSION6)
+    const char savefile[] = "./pictures/01_version6.bmp";
     #else
-    char savefile[] = "./pictures/01_after.bmp";
+    const char savefile[] = "./pictures/01_after.bmp";
     #endif
     BMP *bmp = (BMP*) malloc(sizeof(BMP));
     clock_t start = 0;
@@ -42,6 +50,8 @@ int main(int argc, char *argv[]) {
             rgbaToBw_v1(bmp->data, bmp->width, bmp->height, stride);
         }
         end = clock();
+
+        bmpCalcSNR("./pictures/01_after.bmp", bmp, bmp->width, bmp->height, stride);
     #endif
 
     #if defined(VERSION2)
@@ -51,6 +61,8 @@ int main(int argc, char *argv[]) {
             rgbaToBw_v2(bmp->data, bmp->width, bmp->height, stride);
         }
         end = clock();
+
+        bmpCalcSNR("./pictures/01_after.bmp", bmp, bmp->width, bmp->height, stride);          
     #endif
 
     #if defined(VERSION3)
@@ -61,8 +73,10 @@ int main(int argc, char *argv[]) {
             rgbaToBw_v3(bmp->data, bmp->width, bmp->height, stride);
         }
         end = clock();
+
+        bmpCalcSNR("./pictures/01_after.bmp", bmp, bmp->width, bmp->height, stride);
     #endif
-	
+
     #if defined(VERSION4)
         printf("[Version 4] : NEON\n");
         start = clock();
@@ -70,8 +84,10 @@ int main(int argc, char *argv[]) {
             rgbaToBw_v4(bmp->data, bmp->width, bmp->height, stride);
         }
         end = clock();
+
+        bmpCalcSNR("./pictures/01_after.bmp", bmp, bmp->width, bmp->height, stride);
     #endif
-	
+
     #if defined(VERSION5)
         printf("[Version 4] : NEON (unroll loop + PLD)\n");
         start = clock();
@@ -79,10 +95,14 @@ int main(int argc, char *argv[]) {
             rgbaToBw_v5(bmp->data, bmp->width, bmp->height, stride);
         }
         end = clock();
-    #endif	
+
+        bmpCalcSNR("./pictures/01_after.bmp", bmp, bmp->width, bmp->height, stride);
+    #endif
 
     printf("Execution time of rgbaToBw() : %lf \n", ((double) (end - start)) / CLOCKS_PER_SEC / loop);
     bmpSave(bmp, savefile);
+    bmpFreeBuf(bmp);
+    free(bmp);
 
     return 0;
 }

@@ -1,5 +1,5 @@
 CC = gcc-4.8
-CFLAGS = -O2 -Wall -fdump-tree-vect-details -ftree-vectorize -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
+CFLAGS = -O2 -Wall -lm -ftree-vectorize  -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard
 EXECUTABLE = main main_v1 main_v2 main_v3 main_v4 main_v5
 
 
@@ -23,5 +23,5 @@ run:
 	./main_v5
 
 clean:
-	rm -f $(EXECUTABLE) *.o perf.*
+	rm -f $(EXECUTABLE) *.o perf.* ./pictures/01_*.bmp
 

@@ -49,6 +49,8 @@ typedef struct BMP {
 void bmpLoad(BMP *bmp, const char *fileName);
 void bmpPrint(BMP *bmp);
 void bmpSave(BMP *bmp, const char *fileName);
+void bmpFreeBuf(BMP *bmp);
+void bmpCalcSNR(const char *fileName, BMP *new_bmp, int width, int height, long stride);
 
 /* original version */
 void rgbaToBw(uint32_t *data, int width, int height, long stride); 
